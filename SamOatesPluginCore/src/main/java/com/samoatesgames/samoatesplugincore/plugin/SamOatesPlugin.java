@@ -7,6 +7,8 @@ package com.samoatesgames.samoatesplugincore.plugin;
 
 import com.samoatesgames.samoatesplugincore.SamOatesPluginCore;
 import com.samoatesgames.samoatesplugincore.commands.PluginCommandManager;
+import com.samoatesgames.samoatesplugincore.logger.PluginLogger;
+import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -41,6 +43,11 @@ public class SamOatesPlugin extends JavaPlugin implements Listener {
     protected final PluginCommandManager m_commandManager;
     
     /**
+     * The plugins logger
+     */
+    protected final PluginLogger m_logger;
+    
+    /**
      * Class constructor
      * @param pluginName 
      */
@@ -59,6 +66,7 @@ public class SamOatesPlugin extends JavaPlugin implements Listener {
         m_pluginTitle = pluginTitle;
         m_pluginChatColor = pluginChatColor;
         m_commandManager = SamOatesPluginCore.createPluginCommandManager(this);
+        m_logger = new PluginLogger(this);
     }
     
     /**
@@ -92,6 +100,30 @@ public class SamOatesPlugin extends JavaPlugin implements Listener {
         }
         
         return sender.hasPermission(permission);
+    }
+    
+    /**
+     * Log a message to the info channel
+     * @param message 
+     */
+    public void LogInfo(String message) {
+        m_logger.LogInfo(message);
+    }
+    
+    /**
+     * Log a message to the warning channel
+     * @param message 
+     */
+    public void LogWarning(String message) {
+        m_logger.LogWarning(message);
+    }
+    
+    /**
+     * Log a message to the error channel
+     * @param message 
+     */
+    public void LogError(String message) {
+        m_logger.LogError(message);
     }
     
 }
