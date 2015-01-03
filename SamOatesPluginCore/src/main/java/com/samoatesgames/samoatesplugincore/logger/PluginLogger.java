@@ -33,7 +33,7 @@ public class PluginLogger {
      * Log a message to the info channel
      * @param message 
      */
-    public void LogInfo(String message) {
+    public void logInfo(String message) {
         m_logger.log(Level.INFO, message);
     }
     
@@ -41,7 +41,7 @@ public class PluginLogger {
      * Log a message to the warning channel
      * @param message 
      */
-    public void LogWarning(String message) {
+    public void logWarning(String message) {
         m_logger.log(Level.WARNING, message);
     }
     
@@ -49,7 +49,16 @@ public class PluginLogger {
      * Log a message to the error channel
      * @param message 
      */
-    public void LogError(String message) {
+    public void logError(String message) {
         m_logger.log(Level.SEVERE, message);
+    }
+    
+    /**
+     * Log a message and exception to the error channel
+     * @param message 
+     * @param ex 
+     */
+    public void logException(String message, Exception ex) {
+        m_logger.log(Level.SEVERE, message, ex);
     }
 }

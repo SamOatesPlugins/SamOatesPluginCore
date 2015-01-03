@@ -5,10 +5,9 @@
  */
 package com.samoatesgames.samoatesplugincore.plugin;
 
-import com.samoatesgames.samoatesplugincore.SamOatesPluginCore;
 import com.samoatesgames.samoatesplugincore.commands.PluginCommandManager;
+import com.samoatesgames.samoatesplugincore.configuration.PluginConfiguration;
 import com.samoatesgames.samoatesplugincore.logger.PluginLogger;
-import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -20,7 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * @author Sam Oates <sam@samoatesgames.com>
  */
-public class SamOatesPlugin extends JavaPlugin implements Listener {
+public abstract class SamOatesPlugin extends JavaPlugin implements Listener {
     
     /**
      * The name of this plugin
@@ -48,6 +47,11 @@ public class SamOatesPlugin extends JavaPlugin implements Listener {
     protected final PluginLogger m_logger;
     
     /**
+     * The plugins configuration
+     */
+    protected final PluginConfiguration m_configuration;
+    
+    /**
      * Class constructor
      * @param pluginName 
      */
@@ -65,10 +69,11 @@ public class SamOatesPlugin extends JavaPlugin implements Listener {
         m_pluginName = pluginName;
         m_pluginTitle = pluginTitle;
         m_pluginChatColor = pluginChatColor;
-        m_commandManager = SamOatesPluginCore.createPluginCommandManager(this);
+        m_commandManager = new PluginCommandManager(this);
         m_logger = new PluginLogger(this);
+        m_configuration = new PluginConfiguration(this);
     }
-    
+
     /**
      * Called when the plugin is enabled
      */
@@ -76,7 +81,16 @@ public class SamOatesPlugin extends JavaPlugin implements Listener {
     public void onEnable() {
         PluginManager pluginManager = this.getServer().getPluginManager();
         pluginManager.registerEvents(this, this);
+        
+        // Setup plugin configuration
+        setupConfigurationSettings();
+        m_configuration.loadPluginConfiguration();
     }
+    
+    /**
+     * Register all configuration settings
+     */
+    public abstract void setupConfigurationSettings();
     
     /**
      * Send a message to a given sender
@@ -106,24 +120,52 @@ public class SamOatesPlugin extends JavaPlugin implements Listener {
      * Log a message to the info channel
      * @param message 
      */
-    public void LogInfo(String message) {
-        m_logger.LogInfo(message);
+    public void logInfo(String message) {
+        m_logger.logInfo(message);
     }
     
     /**
      * Log a message to the warning channel
      * @param message 
      */
-    public void LogWarning(String message) {
-        m_logger.LogWarning(message);
+    public void logWarning(String message) {
+        m_logger.logWarning(message);
     }
     
     /**
      * Log a message to the error channel
      * @param message 
      */
-    public void LogError(String message) {
-        m_logger.LogError(message);
+    public void logError(String message) {
+        m_logger.logError(message);
     }
     
+    /**
+     * Log a message and exception to the error channel
+     * @param message 
+     * @param ex 
+     */
+    public void logException(String message, Exception ex) {
+        m_logger.logException(message, ex);
+    }
+        
+    /**
+     * Register a setting with the configuration system
+     * @param key
+     * @param defaultValue 
+     */
+    public void registerSetting(String key, Object defaultValue) {
+        m_configuration.registerSetting(key, defaultValue);
+    }
+    
+    /**
+     * 
+     * @param <T>
+     * @param key
+     * @param defaultValue
+     * @return 
+     */
+    public <T> T getSetting(String key, T defaultValue) {
+        return m_configuration.getSetting(key, defaultValue);
+    }
 }
