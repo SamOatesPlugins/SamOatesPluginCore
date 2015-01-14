@@ -1,10 +1,12 @@
 package com.samoatesgames.samoatesplugincore.configuration;
 
 import com.samoatesgames.samoatesplugincore.plugin.SamOatesPlugin;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
  *
@@ -41,13 +43,13 @@ public class PluginConfiguration {
     }
     
     /**
-     * Load the plugin configuration, merging registered and loaded values
+     * Load a given configuration file
+     * @param configFile
      */
-    public void loadPluginConfiguration() {
+    public void loadPluginConfiguration(File configFile) {
         
-        m_plugin.reloadConfig();
-        FileConfiguration config = m_plugin.getConfig();
-                
+        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+        
         // Merge the registered config values and the loaded config values
         Map<String, Object> mergedSettings = new HashMap<String, Object>();
         for (Entry<String, Object> setting : m_registeredSettings.entrySet()) {
@@ -63,8 +65,23 @@ public class PluginConfiguration {
         // Save out the config with the correct settings
         for (Entry<String, Object> setting : m_registeredSettings.entrySet()) {
             config.set(setting.getKey(), setting.getValue());
-        }        
-        m_plugin.saveConfig();
+        }
+        
+        try {
+            config.save(configFile);     
+        }
+        catch (Exception ex) {
+            m_plugin.logException("Failed to save plugin configuration '" + configFile.getAbsolutePath() + "'", ex);
+        }
+    }
+    
+    /**
+     * Load the plugin configuration, merging registered and loaded values
+     */
+    public void loadPluginConfiguration() {        
+        m_plugin.reloadConfig();
+        File pluginConfig = new File(m_plugin.getDataFolder(), "config.yml");
+        loadPluginConfiguration(pluginConfig);
     }
     
     /**
