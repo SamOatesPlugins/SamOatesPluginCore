@@ -9,6 +9,7 @@ import com.samoatesgames.samoatesplugincore.commands.PluginCommandManager;
 import com.samoatesgames.samoatesplugincore.configuration.PluginConfiguration;
 import com.samoatesgames.samoatesplugincore.logger.PluginLogger;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;
@@ -86,6 +87,20 @@ public abstract class SamOatesPlugin extends JavaPlugin implements Listener {
         setupConfigurationSettings();
         m_configuration.loadPluginConfiguration();
     }
+        
+    /**
+     * Handle commands.
+     * If we have a registered command with that name execute it.
+     * @param sender    The sender of the command
+     * @param cmd       The command being executed
+     * @param label     The commands label
+     * @param args      The arguments passed with the command
+     * @return          True if handled, false otherwise
+     */
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        return m_commandManager.onCommand(sender, cmd, label, args); 
+    }
     
     /**
      * Register all configuration settings
@@ -159,7 +174,7 @@ public abstract class SamOatesPlugin extends JavaPlugin implements Listener {
     }
     
     /**
-     * 
+     * Get the current value of a given setting
      * @param <T>
      * @param key
      * @param defaultValue
@@ -167,5 +182,22 @@ public abstract class SamOatesPlugin extends JavaPlugin implements Listener {
      */
     public <T> T getSetting(String key, T defaultValue) {
         return m_configuration.getSetting(key, defaultValue);
+    }
+    
+    /**
+     * Set the current value of a current setting
+     * @param <T>
+     * @param key
+     * @param value
+     */
+    public <T> void setSetting(String key, T value) {
+        m_configuration.setSetting(key, value);
+    }
+    
+    /**
+     * Save the current values of the settings to the main configuration file
+     */
+    public void saveSettings() {
+        m_configuration.saveSettings();
     }
 }

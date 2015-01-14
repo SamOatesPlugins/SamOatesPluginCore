@@ -79,13 +79,12 @@ public class PluginConfiguration {
      * Load the plugin configuration, merging registered and loaded values
      */
     public void loadPluginConfiguration() {        
-        m_plugin.reloadConfig();
         File pluginConfig = new File(m_plugin.getDataFolder(), "config.yml");
         loadPluginConfiguration(pluginConfig);
     }
     
     /**
-     * 
+     * Get the current value of a current setting
      * @param <T>
      * @param key
      * @param defaultValue
@@ -107,5 +106,50 @@ public class PluginConfiguration {
             m_plugin.logException("The setting '" + key + "' is not of the correct type.", ex);
             return defaultValue;
         }
+    }
+    
+    /**
+     * Set the current value of a setting
+     * @param <T>
+     * @param key
+     * @param value
+     */
+    public <T> void setSetting(String key, T value) {
+        
+        if (!m_registeredSettings.containsKey(key)) {
+            m_plugin.logError("No config setting with the key '" + key + "' is registered.");
+            return;
+        }
+        
+        m_registeredSettings.remove(key);
+        m_registeredSettings.put(key, value);
+    }
+    
+    /**
+     * 
+     */
+    public void saveSettings() {
+        File pluginConfig = new File(m_plugin.getDataFolder(), "config.yml");
+        saveSettings(pluginConfig);        
+    }
+    
+    /**
+     * 
+     * @param configFile 
+     */
+    public void saveSettings(File configFile) {
+        
+        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+        
+        for (Entry<String, Object> setting : m_registeredSettings.entrySet()) {
+            config.set(setting.getKey(), setting.getValue());
+        }
+        
+        try {
+            config.save(configFile);     
+        }
+        catch (Exception ex) {
+            m_plugin.logException("Failed to save plugin configuration '" + configFile.getAbsolutePath() + "'", ex);
+        }        
     }
 }
