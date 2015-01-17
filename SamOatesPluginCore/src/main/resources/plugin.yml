@@ -1,0 +1,6 @@
+name: SamOatesPluginStandalone
+main: com.samoatesgames.samoatesplugincore.plugin.SamOatesPluginStandalone
+version: 1.0
+authors: [SamOatesPlugins]
+description: Standalone implementation of the Sam Oates core plugin.
+loadbefore: [AdvancedPluginControl, CustomCrafting, GriefPreventionDynmap, TotalTeleportation]
