@@ -20,12 +20,6 @@ public abstract class DatabaseTable {
     protected String m_name = null;
 
     /**
-     *
-     */
-    private static HashMap<String, String> TYPECONVERSION = new HashMap<String, String>();
-
-    /**
-     * @param name
      * @param layout
      * @return
      */
@@ -61,7 +55,6 @@ public abstract class DatabaseTable {
 
     /**
      * @param data
-     * @param layout
      * @param instant
      * @return
      */
@@ -102,7 +95,7 @@ public abstract class DatabaseTable {
      * @return
      */
     public ResultSet select(String what) {
-        String selectQuery = "SELECT `" + what + "` FROM '" + m_name + "'";
+        String selectQuery = "SELECT `" + what + "` FROM `" + m_name + "`";
         return m_database.queryResult(selectQuery);
     }
 
@@ -112,7 +105,7 @@ public abstract class DatabaseTable {
      * @return
      */
     public ResultSet select(String what, String where) {
-        String selectQuery = "SELECT `" + what + "` FROM '" + m_name + "' WHERE " + where;
+        String selectQuery = "SELECT `" + what + "` FROM `" + m_name + "` WHERE " + where;
         return m_database.queryResult(selectQuery);
     }
 
@@ -121,13 +114,20 @@ public abstract class DatabaseTable {
      * @return
      */
     public ResultSet selectAll(String where) {
-        String selectQuery = "SELECT * FROM '" + m_name + "' WHERE " + where;
+        String selectQuery = "SELECT * FROM `" + m_name + "` WHERE " + where;
+        return m_database.queryResult(selectQuery);
+    }
+    
+    /**
+     * @return
+     */
+    public ResultSet selectAll() {
+        String selectQuery = "SELECT * FROM `" + m_name + "`";
         return m_database.queryResult(selectQuery);
     }
 
     /**
      * @param data
-     * @param layout
      * @param where
      * @param instant
      */
@@ -162,7 +162,7 @@ public abstract class DatabaseTable {
      * @return
      */
     public boolean exists(String where) {
-        String query = "SELECT * FROM '" + m_name + "' WHERE " + where;
+        String query = "SELECT * FROM `" + m_name + "` WHERE " + where;
         ResultSet result = m_database.queryResult(query);
         if (result == null) {
             return false;
@@ -177,7 +177,7 @@ public abstract class DatabaseTable {
     }
 
     /**
-     * @param class1
+     * @param clazz
      * @return
      */
     protected String convertType(Class<?> clazz) {
@@ -185,30 +185,15 @@ public abstract class DatabaseTable {
             return "INT";
         }
 
-        return TYPECONVERSION.get(clazz.getSimpleName().toLowerCase());
-    }
-
-    /**
-     *
-     */
-    public static void addDefaultConversions() {
-        addTypeConversion("int", "INT");
-        addTypeConversion("long", "BIGINT");
-        addTypeConversion("double", "DOUBLE");
-        addTypeConversion("float", "FLOAT");
-        addTypeConversion("char", "VARCHAR");
-        addTypeConversion("string", "TEXT");
-    }
-
-    /**
-     * @param javaType
-     * @param databaseType
-     */
-    public static void addTypeConversion(String javaType, String databaseType) {
-        if (TYPECONVERSION.containsKey(javaType)) {
-            TYPECONVERSION.remove(javaType);
-        }
-        TYPECONVERSION.put(javaType, databaseType);
+        String type = clazz.getSimpleName().toLowerCase();
+        if (type.equals("int")) return "INT";
+        if (type.equals("long")) return "BIGINT";
+        if (type.equals("double")) return "DOUBLE";
+        if (type.equals("float")) return "FLOAT";
+        if (type.equals("char")) return "VARCHAR";
+        if (type.equals("string")) return "TEXT";
+        
+        return null;
     }
 
 }
