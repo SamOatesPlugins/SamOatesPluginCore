@@ -58,14 +58,16 @@ public class SQLThread extends DatabaseThread {
 			return null;
 		}
 		
-		try {
-			return DriverManager.getConnection(
-				"jdbc:mysql://" + m_options.host + ":" + m_options.port + "/" +
+                final String connString = "jdbc:mysql://" + m_options.host + ":" + m_options.port + "/" +
 				m_options.databaseName + "?" +
 				"user=" + m_options.username +
-				"&password=" + m_options.password
-			);
+				"&password=" + m_options.password;
+                
+		try {
+			return DriverManager.getConnection(connString);
 		} catch (SQLException e) {
+                        Utilities.outputError("Connection: " + connString);
+                        Utilities.outputError("Failed to login: " + e.getMessage());
 			return null;
 		}
 		

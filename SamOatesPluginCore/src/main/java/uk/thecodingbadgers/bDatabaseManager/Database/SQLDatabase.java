@@ -80,13 +80,13 @@ public class SQLDatabase extends BukkitDatabase {
             return null;
         }
 
+        final String connString = "jdbc:mysql://" + m_options.host + ":" + m_options.port + "/"
+            + m_options.databaseName + "?"
+            + "user=" + m_options.username
+            + "&password=" + m_options.password;
+        
         try {
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://" + m_options.host + ":" + m_options.port + "/"
-                    + m_options.databaseName + "?"
-                    + "user=" + m_options.username
-                    + "&password=" + m_options.password
-            );
+            Connection connection = DriverManager.getConnection(connString);
 
             if (connection == null) {
                 Utilities.outputError("Could not connect to database '" + m_databaseName + "' using '" + m_options.username + "'@'" + m_options.host + ":" + m_options.port + "' using password '" + (m_options.password.length() == 0 ? "NO" : "YES") + "'");
@@ -95,6 +95,8 @@ public class SQLDatabase extends BukkitDatabase {
             return connection;
 
         } catch (SQLException e) {
+            Utilities.outputError("Connection: " + connString);
+            Utilities.outputError("Failed to login: " + e.getMessage());
             return null;
         }
 
