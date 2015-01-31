@@ -181,7 +181,19 @@ public abstract class SamOatesPlugin extends JavaPlugin implements Listener {
      * @return 
      */
     public <T> T getSetting(String key, T defaultValue) {
-        return m_configuration.getSetting(key, defaultValue);
+        return getSetting(key, defaultValue, false);
+    }
+    
+    /**
+     * Get the current value of a given setting
+     * @param <T>
+     * @param key
+     * @param defaultValue
+     * @param ignoreMissing
+     * @return 
+     */
+    public <T> T getSetting(String key, T defaultValue, boolean ignoreMissing) {
+        return m_configuration.getSetting(key, defaultValue, ignoreMissing);
     }
     
     /**

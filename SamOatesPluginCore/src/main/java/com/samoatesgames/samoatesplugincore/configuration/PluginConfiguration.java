@@ -91,9 +91,23 @@ public class PluginConfiguration {
      * @return 
      */
     public <T> T getSetting(String key, T defaultValue) {
+        return getSetting(key, defaultValue, false);
+    }
+    
+    /**
+     * Get the current value of a current setting
+     * @param <T>
+     * @param key
+     * @param defaultValue
+     * @param ignoreMissing
+     * @return 
+     */
+    public <T> T getSetting(String key, T defaultValue, boolean ignoreMissing) {
         
         if (!m_registeredSettings.containsKey(key)) {
-            m_plugin.logError("No config setting with the key '" + key + "' is registered.");
+            if (!ignoreMissing) {
+                m_plugin.logError("No config setting with the key '" + key + "' is registered.");
+            }
             return defaultValue;
         }
         
@@ -107,7 +121,7 @@ public class PluginConfiguration {
             return defaultValue;
         }
     }
-    
+        
     /**
      * Set the current value of a setting
      * @param <T>
