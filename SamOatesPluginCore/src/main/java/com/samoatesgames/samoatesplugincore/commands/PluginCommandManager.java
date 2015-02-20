@@ -35,14 +35,16 @@ public class PluginCommandManager {
      * @param command
      * @param handler 
      */
-    public void registerCommandHandler(String command, ICommandHandler handler) {
-        
+    public void registerCommandHandler(String command, ICommandHandler handler) {        
         command = command.toLowerCase();
-        if (m_commands.containsKey(command)) {
-            // TODO Log warning of overwrite
-        }
-        
         m_commands.put(command, handler);
+    }
+    
+    /**
+     * Release all commands
+     */
+    public void free() {
+        m_commands.clear();
     }
     
     /**

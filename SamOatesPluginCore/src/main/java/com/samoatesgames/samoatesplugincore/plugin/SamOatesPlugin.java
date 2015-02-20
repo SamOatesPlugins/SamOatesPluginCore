@@ -87,6 +87,15 @@ public abstract class SamOatesPlugin extends JavaPlugin implements Listener {
         setupConfigurationSettings();
         m_configuration.loadPluginConfiguration();
     }
+    
+    /**
+     * Called when the plugin is enabled
+     */
+    @Override
+    public void onDisable() {
+        m_configuration.saveSettings();
+        m_commandManager.free();
+    }
         
     /**
      * Handle commands.
