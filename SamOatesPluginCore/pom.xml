@@ -11,20 +11,29 @@
             <id>spigot-snapshots</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>fanciful-mvn-repo</id>
+            <url>http://repo.franga2000.com/artifactory/public</url>
+        </repository>
     </repositories>
     
     <dependencies>
         <dependency>
              <groupId>org.spigotmc</groupId>
              <artifactId>spigot-api</artifactId>
-             <version>1.8-R0.1-SNAPSHOT</version>
+             <version>1.8.3-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>Spigot</artifactId>
             <version>1.8</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/spigot-1.8.jar</systemPath>
+            <systemPath>${project.basedir}/libs/spigot-1.8.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>mkremins</groupId>
+            <artifactId>fanciful</artifactId>
+            <version>0.3.1</version>
         </dependency>
     </dependencies>
         

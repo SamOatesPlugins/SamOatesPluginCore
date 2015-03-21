@@ -57,6 +57,26 @@ public class PluginCommandManager {
     }
     
     /**
+     * Forward a send tooltip message command to the owner plugin
+     * @param sender
+     * @param message 
+     * @param tooltip 
+     */
+    public void sendTooltipMessage(CommandSender sender, String message, String tooltip) {
+        m_plugin.sendTooltipMessage(sender, message, tooltip);
+    }
+    
+    /**
+     * Forward a send tooltip message command to the owner plugin
+     * @param sender
+     * @param message 
+     * @param tooltip 
+     */
+    public void sendTooltipMessage(CommandSender sender, String message, String[] tooltip) {
+        m_plugin.sendTooltipMessage(sender, message, tooltip);
+    }  
+    
+    /**
      * Forward a has permission request to the owner plugin
      * @param sender
      * @param permission

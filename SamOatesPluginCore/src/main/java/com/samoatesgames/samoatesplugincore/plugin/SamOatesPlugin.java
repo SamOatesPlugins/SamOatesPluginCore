@@ -8,6 +8,7 @@ package com.samoatesgames.samoatesplugincore.plugin;
 import com.samoatesgames.samoatesplugincore.commands.PluginCommandManager;
 import com.samoatesgames.samoatesplugincore.configuration.PluginConfiguration;
 import com.samoatesgames.samoatesplugincore.logger.PluginLogger;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -123,6 +124,34 @@ public abstract class SamOatesPlugin extends JavaPlugin implements Listener {
      */
     public void sendMessage(CommandSender sender, String message) {
         sender.sendMessage(m_pluginChatColor + "[" + m_pluginTitle + "] " + ChatColor.WHITE + message);
+    }
+    
+    /**
+     * Send a tooltip message to a given sender
+     * @param sender
+     * @param message 
+     * @param tooltip 
+     */
+    public void sendTooltipMessage(CommandSender sender, String message, String[] tooltip) {
+        
+        String tooltipMessage = new FancyMessage()
+            .color(m_pluginChatColor)
+            .then("[" + m_pluginTitle + "] ")
+            .then(message)
+            .tooltip(tooltip)
+            .toJSONString();
+        
+        sender.sendMessage(tooltipMessage);
+    }
+    
+    /**
+     * Send a tooltip message to a given sender
+     * @param sender
+     * @param message 
+     * @param tooltip 
+     */
+    public void sendTooltipMessage(CommandSender sender, String message, String tooltip) {
+        sendTooltipMessage(sender, message, new String[] { tooltip });
     }
     
     /**
