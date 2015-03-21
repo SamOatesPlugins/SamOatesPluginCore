@@ -9,10 +9,14 @@ import com.samoatesgames.samoatesplugincore.commands.PluginCommandManager;
 import com.samoatesgames.samoatesplugincore.configuration.PluginConfiguration;
 import com.samoatesgames.samoatesplugincore.logger.PluginLogger;
 import mkremins.fanciful.FancyMessage;
+import net.minecraft.server.v1_8_R2.IChatBaseComponent;
+import net.minecraft.server.v1_8_R2.PacketPlayOutChat;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.craftbukkit.v1_8_R2.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -134,14 +138,29 @@ public abstract class SamOatesPlugin extends JavaPlugin implements Listener {
      */
     public void sendTooltipMessage(CommandSender sender, String message, String[] tooltip) {
         
-        String tooltipMessage = new FancyMessage()
-            .color(m_pluginChatColor)
-            .then("[" + m_pluginTitle + "] ")
-            .then(message)
-            .tooltip(tooltip)
-            .toJSONString();
-        
-        sender.sendMessage(tooltipMessage);
+        if (sender instanceof Player) {        
+            String tooltipMessage = new FancyMessage("[" + m_pluginTitle + "] ")
+                    .color(m_pluginChatColor)
+                .then(message)
+                    .tooltip(tooltip)
+                .toJSONString();
+
+            sendRawMessage((Player)sender, tooltipMessage);
+        }
+        else{
+            sendMessage(sender, message);
+        }
+    }
+    
+    /**
+     * Send a raw json message to a specified player
+     * @param player The player to send the message too
+     * @param message The message to send
+     */
+    private void sendRawMessage(Player player, String message) {
+        IChatBaseComponent comp = IChatBaseComponent.ChatSerializer.a(message);
+        PacketPlayOutChat packet = new PacketPlayOutChat(comp);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
     }
     
     /**
