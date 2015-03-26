@@ -15,9 +15,9 @@ public class TitleManager {
      * Send a title message to a player.
      * @param player    The player to send it too
      * @param title     The title to show (or null to not show one)
-     * @param titleColor
+     * @param titleColor The colour of the title.
      * @param subtitle  The subtitle to show (or null to not show one)
-     * @param subTitleColor
+     * @param subTitleColor The colour of the subtitle.
      * @param fadeIn    Fade in time
      * @param stay      How long to stay
      * @param fadeOut   Fade out time
@@ -42,42 +42,42 @@ public class TitleManager {
     }
 
     /**
-     * 
-     * @param player
-     * @param title 
+     * Send a title message to a player. (in white text, showing for 5 seconds)
+     * @param player Player to send it too.
+     * @param title The title to show.
      */
     public static void sendTitle(Player player, String title) {
         sendTitle(player, title, ChatColor.WHITE, null, ChatColor.WHITE, 1, 3, 1);
     }
     
     /**
-     * 
-     * @param player
-     * @param title 
-     * @param color 
+     * Send a title message to a player. (showing for 5 seconds)
+     * @param player Player to send it too.
+     * @param title The title to show.
+     * @param color The colour of the title.
      */
     public static void sendTitle(Player player, String title, ChatColor color) {
         sendTitle(player, title, color, null, ChatColor.WHITE, 1, 3, 1);
     }
     
     /**
-     * 
-     * @param player
-     * @param title 
-     * @param titleColor 
-     * @param subTitle 
+     * Send a title message to a player, with a white subtitle (showing for 5 seconds)
+     * @param player Player to send it too.
+     * @param title The title to show.
+     * @param titleColor The colour of the title.
+     * @param subTitle The subtitle to show.
      */
     public static void sendTitle(Player player, String title, ChatColor titleColor, String subTitle) {
         sendTitle(player, title, titleColor, subTitle, ChatColor.WHITE, 1, 3, 1);
     }
     
     /**
-     * 
-     * @param player
-     * @param title 
-     * @param titleColor 
-     * @param subtitleColor 
-     * @param subTitle 
+     * Send a title message to a player, with a subtitle (showing for 5 seconds)
+     * @param player Player to send it too.
+     * @param title The title to show.
+     * @param titleColor The colour of the title.
+     * @param subTitle The subtitle to show.
+     * @param subtitleColor The colour of the subtitle.
      */
     public static void sendTitle(Player player, String title, ChatColor titleColor, String subTitle, ChatColor subtitleColor) {
         sendTitle(player, title, titleColor, subTitle, subtitleColor, 1, 3, 1);
